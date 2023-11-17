@@ -105,20 +105,11 @@ def EntityAppender():
             if sl[0] == 'Barrier':
                 barriers.append(Barrier(int(sl[1]),int(sl[2]),int(sl[3]),int(sl[4]),int(sl[5]),str(sl[6])))
             if sl[0] == 'Enemy':
-                if int(sl[5]) == 1:
-                    enemiesUltimate.append(Enemy(int(sl[1]),int(sl[2]),int(sl[3]),int(sl[4]),int(sl[5]),int(sl[6]),int(sl[7])))
-                if int(sl[5]) == 2:
-                    enemiesUltimate.append(Enemy(int(sl[1]),int(sl[2]),int(sl[3]),int(sl[4]),int(sl[5]),int(sl[6]),int(sl[7])))
+                enemiesUltimate.append(Enemy(int(sl[1]),int(sl[2]),int(sl[3]),int(sl[4]),int(sl[5]),int(sl[6]),int(sl[7])))
             if sl[0] == 'Gate':
-                if int(sl[5]) == 1:
-                    gatesUltimate.append(Gate(int(sl[1]),int(sl[2]),int(sl[3]),int(sl[4]),int(sl[5]),int(sl[6]),str(sl[7]),int(sl[8])))
-                if int(sl[5]) == 2:
-                    gatesUltimate.append(Gate(int(sl[1]),int(sl[2]),int(sl[3]),int(sl[4]),int(sl[5]),int(sl[6]),str(sl[7]),int(sl[8])))
+                gatesUltimate.append(Gate(int(sl[1]),int(sl[2]),int(sl[3]),int(sl[4]),int(sl[5]),int(sl[6]),str(sl[7]),int(sl[8])))
             if sl[0] == 'Key':
-                if int(sl[5]) == 1:
-                    keysUltimate.append(Key(int(sl[1]),int(sl[2]),int(sl[3]),int(sl[4]),int(sl[5]),int(sl[6]),int(sl[7])))
-                if int(sl[5]) == 2:
-                    keysUltimate.append(Key(int(sl[1]),int(sl[2]),int(sl[3]),int(sl[4]),int(sl[5]),int(sl[6]),int(sl[7])))
+                keysUltimate.append(Key(int(sl[1]),int(sl[2]),int(sl[3]),int(sl[4]),int(sl[5]),int(sl[6]),int(sl[7])))
             if sl[0] == 'Checkpoint':
                 checkpoints.append(Checkpoint(int(sl[1]),int(sl[2]),int(sl[3]),int(sl[4]),int(sl[5]),int(sl[6])))
 
@@ -261,10 +252,18 @@ def LevelCreator(level):
                     break
                 else:
                     gate.open = True
-    #first corridor level 2
+    if level == 3:
+        for gate in temp_gates[0:2]:
+            for key in temp_keys:
+                if key.obtained == False:
+                    gate.open == False
+                    gate.appear()
+                    break
+                if key.obtained == True:
+                    gate.open = True
     for enemy in temp_enemies:
         enemy.update()
-def get_font(size): # Returns Press-Start-2P in the desired size
+def get_font(size):
     return pygame.font.Font("font.ttf", size)
 EntityAppender()
 player = Player(WIDTH/2,HEIGHT/2+100,24,24,0,0)
@@ -283,9 +282,6 @@ while Running == True:
     right_gate_collision = []  
     top_gate_collision =  [] 
     bottom_gate_collision = []
-    enemy_collision = []
-    checkpoint_collision = []
-    key_collision = []
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()

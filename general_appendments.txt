@@ -4,7 +4,7 @@ Objective,708,288,119,100,2,1
 Objective,964,288,119,100,3,1
 Objective,1407,10,119,100,1,0
 Objective,10,10,100,100,2,0
-Objective,1426,10,100,100,3,0
+Objective,10,10,100,100,3,0
 #Barriers WIDTH = 1536 HEIGHT = 864
 Barrier,0,0,10,864,1,A
 Barrier,1526,0,10,864,1,D
@@ -38,10 +38,13 @@ Barrier,230,120,1081,10,2,W
 Barrier,228,112,4,16,2,D
 Barrier,1309,112,4,16,2,A
 #3rd level barriers
-Barrier,0,0,10,864,2,A
-Barrier,1526,0,10,864,2,D
-Barrier,0,0,1536,10,2,W
-Barrier,0,854,1536,10,2,S
+Barrier,0,0,10,864,3,A
+Barrier,1526,0,10,864,3,D
+Barrier,0,0,1536,10,3,W
+Barrier,0,854,1536,10,3,S
+Barrier,110,0,10,754,3,D
+Barrier,120,0,10,754,3,A
+Barrier,112,752,16,4,3,W
 #checkpoints list
 Checkpoint,800,590,75,100,1,1
 Checkpoint,875,590,75,100,1,2
@@ -57,6 +60,8 @@ Gate,1311,734,100,10,2,-1,S,0
 Gate,1311,744,100,10,2,-1,W,0
 Gate,110,10,20,118,2,3,A,0
 Gate,10,110,118,20,2,3,W,0
+Gate,10,110,100,10,3,100,W,0
+Gate,10,120,100,10,3,100,W,0
 #keys list
 Key,50,629,24,24,1,2,0
 #keys2
@@ -81,6 +86,8 @@ Key,486,358,24,24,2,3,0
 Key,411,482,24,24,2,3,0
 Key,336,358,24,24,2,3,0
 Key,261,482,24,24,2,3,0
+#3rd level keys
+Key,168,48,24,24,3,1,0
 #enemies1 list
 Enemy,200,750,24,24,1,0,3
 Enemy,400,750,24,24,1,0,3
