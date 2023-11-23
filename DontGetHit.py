@@ -105,7 +105,7 @@ def EntityAppender():
             if sl[0] == 'Barrier':
                 barriers.append(Barrier(int(sl[1]),int(sl[2]),int(sl[3]),int(sl[4]),int(sl[5]),str(sl[6])))
             if sl[0] == 'Enemy':
-                enemiesUltimate.append(Enemy(int(sl[1]),int(sl[2]),int(sl[3]),int(sl[4]),int(sl[5]),int(sl[6]),int(sl[7])))
+                enemiesUltimate.append(Enemy(int(sl[1]),int(sl[2]),int(sl[3]),int(sl[4]),int(sl[5]),int(sl[6]),float(sl[7])))
             if sl[0] == 'Gate':
                 gatesUltimate.append(Gate(int(sl[1]),int(sl[2]),int(sl[3]),int(sl[4]),int(sl[5]),int(sl[6]),str(sl[7]),int(sl[8])))
             if sl[0] == 'Key':
@@ -133,8 +133,8 @@ def LevelCreator(level):
                 player.reset()
                 player.level = 2
             elif pygame.Rect.colliderect(player.rect, objective.rect) and objective.level == 3:
-                player.spawnpoint_x = 100
-                player.spawnpoint_y = HEIGHT-100
+                player.spawnpoint_x = 48
+                player.spawnpoint_y = 170
                 player.reset()
                 player.level = 3
     if level == 1:
@@ -178,7 +178,6 @@ def LevelCreator(level):
                 if key.obtained == True and key.tier == gate.tier:
                     gate.open = True
                 else:
-                    gate.appear()
                     gate.open = False        
     if level == 2:
         for enemy in temp_enemies[0:12]:
@@ -221,15 +220,12 @@ def LevelCreator(level):
                 if key.obtained == True and key.tier == gate.tier:
                     gate.open = True
                 else:
-                    gate.appear()
                     gate.open = False
         for gate in temp_gates[2:4]:
             for key in temp_keys[1:2]:
                 if key.obtained == False or key.tier != gate.tier:
-                    gate.appear()
                     gate.open = False
                 if key.obtained == False and key.tier == gate.tier:
-                    gate.appear()
                     gate.open = False
                     break
                 else:
@@ -239,15 +235,12 @@ def LevelCreator(level):
                 if key.obtained == True and key.tier == gate.tier:
                     gate.open = True
                 else:
-                    gate.appear()
                     gate.open = False
         for gate in temp_gates[6:]:
             for key in temp_keys[3:]:
                 if key.obtained == False or key.tier != gate.tier:
-                    gate.appear()
                     gate.open = False
                 if key.obtained == False and key.tier == gate.tier:
-                    gate.appear()
                     gate.open = False
                     break
                 else:
@@ -256,13 +249,39 @@ def LevelCreator(level):
         for gate in temp_gates[0:2]:
             for key in temp_keys:
                 if key.obtained == False:
-                    gate.open == False
-                    gate.appear()
+                    gate.open = False
                     break
                 if key.obtained == True:
                     gate.open = True
+        for gate in temp_gates[2:]:
+            for key in temp_keys:
+                if key.tier <= gate.tier:
+                    if key.obtained == False:
+                        gate.open = False
+                    if key.obtained == True:
+                        gate.open = True
+        for enemy in temp_enemies[0:2]:
+            if enemy.y > 730:
+                enemy.velY = -enemy.velY
+        if temp_enemies[0].y < 234:
+                temp_enemies[0].velY = -temp_enemies[0].velY
+        if temp_enemies[1].y < 159:
+                temp_enemies[1].velY = -temp_enemies[1].velY
+        for enemy in temp_enemies[2:17]:
+            if temp_enemies[2].y > 284:
+                enemy.velY = -enemy.velY
+            if temp_enemies[2].y < 234:
+                enemy.velY = -enemy.velY
+        for enemy in temp_enemies[17:35]:
+            if temp_enemies[17].y < 10:
+                enemy.velY = -enemy.velY
+            if temp_enemies[17].y >= 86:
+                enemy.velY = -enemy.velY
     for enemy in temp_enemies:
         enemy.update()
+    for gate in temp_gates:
+            if gate.open == False:
+                gate.appear()
 def get_font(size):
     return pygame.font.Font("font.ttf", size)
 EntityAppender()
@@ -376,6 +395,9 @@ while Running == True:
                     player.reset()
                     player.tier = 1
                     player.level += 1
+                    if player.level == 3:
+                        player.spawnpoint_x = 44
+                        player.spawnpoint_y = 170
     '''for gate in gatesUltimate:
             if gate.level == player.level:
                 temp_gates.append(gate)
