@@ -271,6 +271,7 @@ def LevelCreator(level):
                 if key.tier <= gate.tier:
                     if key.obtained == False:
                         gate.open = False
+                        break
                     if key.obtained == True:
                         gate.open = True
         for enemy in temp_enemies[0:2]:
