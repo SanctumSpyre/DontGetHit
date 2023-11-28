@@ -4,7 +4,7 @@ import random
 
 #Constants
 WIDTH, HEIGHT = 1536, 864
-TITLE = "Dont Get Hit!"
+TITLE = "Don't Get Hit!"
 
 #pygame initialization
 pygame.init()
@@ -63,6 +63,7 @@ class Player(Parent):
         super().__init__(x1,y1,x2,y2,level,tier,(250, 120, 60))
         self.velX = 0
         self.velY = 0
+        self.in_text_screen = 0
         self.spawnpoint_x = 0
         self.spawnpoint_y = 0
         self.left_pressed = False
@@ -105,7 +106,7 @@ def EntityAppender():
             if sl[0] == 'Barrier':
                 barriers.append(Barrier(int(sl[1]),int(sl[2]),int(sl[3]),int(sl[4]),int(sl[5]),str(sl[6])))
             if sl[0] == 'Enemy':
-                enemiesUltimate.append(Enemy(int(sl[1]),int(sl[2]),int(sl[3]),int(sl[4]),int(sl[5]),int(sl[6]),float(sl[7])))
+                enemiesUltimate.append(Enemy(int(sl[1]),int(sl[2]),int(sl[3]),int(sl[4]),int(sl[5]),float(sl[6]),float(sl[7])))
             if sl[0] == 'Gate':
                 gatesUltimate.append(Gate(int(sl[1]),int(sl[2]),int(sl[3]),int(sl[4]),int(sl[5]),int(sl[6]),str(sl[7]),int(sl[8])))
             if sl[0] == 'Key':
@@ -118,6 +119,15 @@ def LevelCreator(level):
             if gate.level == player.level:
                 temp_gates.append(gate)
     if level == 0:
+        PLAY_TEXT = get_font(50).render("Welcome to Don't Get Hit!", True, "White")
+        PLAY_RECT = PLAY_TEXT.get_rect(center=(768,40))
+        PLAY_TEXT2 = get_font(30).render("Select a level!", True, "white")
+        PLAY_RECT2 = PLAY_TEXT2.get_rect(center=(768,100))
+        PLAY_TEXT3 = get_font(26).render("1         2         3", True, "white")
+        PLAY_RECT3 = PLAY_TEXT3.get_rect(topleft=(498,250))
+        win.blit(PLAY_TEXT,PLAY_RECT)
+        win.blit(PLAY_TEXT2,PLAY_RECT2)
+        win.blit(PLAY_TEXT3,PLAY_RECT3)
         for objective in objectives:
             if objective.menu_choice == 1:
                 objective.appear()
@@ -127,16 +137,19 @@ def LevelCreator(level):
                 player.spawnpoint_y = HEIGHT-100
                 player.reset()
                 player.level = 1
+                player.in_text_screen = 1
             elif pygame.Rect.colliderect(player.rect, objective.rect) and objective.level == 2:
                 player.spawnpoint_x = WIDTH-70
                 player.spawnpoint_y = 55
                 player.reset()
                 player.level = 2
+                player.in_text_screen = 1
             elif pygame.Rect.colliderect(player.rect, objective.rect) and objective.level == 3:
                 player.spawnpoint_x = 48
                 player.spawnpoint_y = 170
                 player.reset()
                 player.level = 3
+                player.in_text_screen = 1
     if level == 1:
         if temp_enemies[0].y == 831:
             for enemy in temp_enemies[0:6]:
@@ -277,19 +290,62 @@ def LevelCreator(level):
                 enemy.velY = -enemy.velY
             if temp_enemies[17].y >= 86:
                 enemy.velY = -enemy.velY
+        for enemy in temp_enemies[35:]:
+            if enemy.y >= 830 or enemy.y <= 10:
+                enemy.velY = -enemy.velY
+            if enemy.x <= 1232 or enemy.x >= 1502:
+                enemy.velX = -enemy.velX
+    if level == 4:
+        PLAY_TEXT = get_font(45).render("YOU'VE BEATEN DON'T GET HIT!!", True, "White")
+        PLAY_RECT = PLAY_TEXT.get_rect(center=(int(640*1.2), int(1.2*260)))
+        PLAY_TEXT2 = get_font(40).render("Press M to go back to replay levels!", True, "white")
+        PLAY_RECT2 = PLAY_TEXT2.get_rect(center=(int(640*1.2), int(1.2*260+50)))
+        win.blit(PLAY_TEXT,PLAY_RECT)
+        win.blit(PLAY_TEXT2,PLAY_RECT2)
     for enemy in temp_enemies:
         enemy.update()
     for gate in temp_gates:
             if gate.open == False:
                 gate.appear()
+def text_screen(level):
+    if level == 1:
+        PLAY_TEXT = get_font(45).render("First level is a piece ", True, "White")
+        PLAY_RECT = PLAY_TEXT.get_rect(center=(768,370))
+        PLAY_TEXT2 = get_font(40).render("of cake! Right?....", True, "white")
+        PLAY_RECT2 = PLAY_TEXT2.get_rect(center=(768,425))
+        win.blit(PLAY_TEXT,PLAY_RECT)
+        win.blit(PLAY_TEXT2,PLAY_RECT2)
+    if level == 2:
+        PLAY_TEXT = get_font(40).render("Fancy fingers for the middle", True, "White")
+        PLAY_RECT = PLAY_TEXT.get_rect(center=(768,200))
+        win.blit(PLAY_TEXT,PLAY_RECT)
+    if level == 3:
+        PLAY_TEXT = get_font(40).render("Have fun!! Remember it's just a game.", True, "White")
+        PLAY_RECT = PLAY_TEXT.get_rect(center=(768,200))
+        win.blit(PLAY_TEXT,PLAY_RECT)
+    if level == 4:
+        PLAY_TEXT = get_font(40).render("Secret Level?", True, "White")
+        PLAY_RECT = PLAY_TEXT.get_rect(center=(768,200))
+        win.blit(PLAY_TEXT,PLAY_RECT)
 def get_font(size):
     return pygame.font.Font("font.ttf", size)
 EntityAppender()
 player = Player(WIDTH/2,HEIGHT/2+100,24,24,0,0)
 menu = False
 Running = True
+timer = 0
 while Running == True:
-    #temp lists
+    if player.in_text_screen == 1:
+        while timer < 400:
+            win.fill((12, 24, 36))
+            text_screen(player.level)
+            timer += 1
+            pygame.display.flip()
+            clock.tick(120)
+    if timer == 400:
+        player.in_text_screen = 0
+        timer = 0
+
     temp_keys = []
     temp_enemies= []
     temp_gates = []
@@ -312,7 +368,7 @@ while Running == True:
                 player.left_pressed = True
             if event.key == pygame.K_d:
                 player.right_pressed = True
-            if event.key == pygame.K_w or event.key == pygame.K_UP:
+            if event.key == pygame.K_w:
                 player.up_pressed = True
             if event.key == pygame.K_s:
                 player.down_pressed = True
@@ -327,13 +383,6 @@ while Running == True:
                 player.down_pressed = False
     win.fill((12, 24, 36))
     #this is for when game is 3 levels have been completed!
-    if player.level == 4:
-        PLAY_TEXT = get_font(45).render("YOU'VE BEATEN DONT GET HIT!!", True, "White")
-        PLAY_RECT = PLAY_TEXT.get_rect(center=(int(640*1.2), int(1.2*260)))
-        PLAY_TEXT2 = get_font(40).render("Press M to go back to replay levels!", True, "white")
-        PLAY_RECT2 = PLAY_TEXT2.get_rect(center=(int(640*1.2), int(1.2*260+50)))
-        win.blit(PLAY_TEXT,PLAY_RECT)
-        win.blit(PLAY_TEXT2,PLAY_RECT2)
     for barrier in barriers:
        if barrier.level == player.level:
             if barrier.block == 'A':
@@ -395,6 +444,7 @@ while Running == True:
                     player.reset()
                     player.tier = 1
                     player.level += 1
+                    player.in_text_screen = 1
                     if player.level == 3:
                         player.spawnpoint_x = 44
                         player.spawnpoint_y = 170
