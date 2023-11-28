@@ -42,10 +42,10 @@ Barrier,0,0,10,864,3,A
 Barrier,1526,0,10,864,3,D
 Barrier,0,0,1536,10,3,W
 Barrier,0,854,1536,10,3,S
-#Barrier,110,0,10,754,3,D
+Barrier,110,0,10,754,3,D
 Barrier,120,0,10,754,3,A
 Barrier,112,752,16,4,3,W
-#Barrier,230,110,10,644,3,D
+Barrier,230,110,10,644,3,D
 Barrier,240,110,10,644,3,A
 Barrier,232,108,16,4,3,S
 Barrier,232,752,16,4,3,W
