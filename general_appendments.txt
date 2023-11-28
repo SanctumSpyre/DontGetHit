@@ -16,7 +16,7 @@ Barrier,0,690,1405,10,1,S
 Barrier,1387,0,20,588,1,A
 Barrier,0,580,1405,10,1,W
 Barrier,0,570,1405,10,1,S
-#2nd level barriers
+#2nd level Barriers
 Barrier,0,0,10,864,2,A
 Barrier,1526,0,10,864,2,D
 Barrier,0,0,1536,10,2,W
@@ -37,7 +37,7 @@ Barrier,230,110,1081,10,2,S
 Barrier,230,120,1081,10,2,W
 Barrier,228,112,4,16,2,D
 Barrier,1309,112,4,16,2,A
-#3rd level barriers
+#3rd level Barriers
 Barrier,0,0,10,864,3,A
 Barrier,1526,0,10,864,3,D
 Barrier,0,0,1536,10,3,W

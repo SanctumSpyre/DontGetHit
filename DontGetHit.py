@@ -259,6 +259,9 @@ def LevelCreator(level):
                 else:
                     gate.open = True
     if level == 3:
+        if player.x > 900 and player.x < 1000 and player.y > 810 and player.y < 864:
+            player.level = 1000
+            player.in_text_screen = 1
         for gate in temp_gates[0:2]:
             for key in temp_keys:
                 if key.obtained == False:
@@ -308,6 +311,13 @@ def LevelCreator(level):
     for gate in temp_gates:
             if gate.open == False:
                 gate.appear()
+    if level == 1000:
+        PLAY_TEXT = get_font(30).render("well now you arent supposed to be here!", True, "White")
+        PLAY_RECT = PLAY_TEXT.get_rect(center=(int(640*1.2), int(1.2*260)))
+        PLAY_TEXT2 = get_font(25).render("I suppose you could consider this a secret ending..", True, "white")
+        PLAY_RECT2 = PLAY_TEXT2.get_rect(center=(int(640*1.2), int(1.2*260+50)))
+        win.blit(PLAY_TEXT,PLAY_RECT)
+        win.blit(PLAY_TEXT2,PLAY_RECT2)
 def text_screen(level):
     if level == 1:
         PLAY_TEXT = get_font(45).render("First level is a piece ", True, "White")
@@ -325,14 +335,19 @@ def text_screen(level):
         PLAY_RECT = PLAY_TEXT.get_rect(center=(768,200))
         win.blit(PLAY_TEXT,PLAY_RECT)
     if level == 4:
-        PLAY_TEXT = get_font(40).render("Secret Level?", True, "White")
+        PLAY_TEXT = get_font(40).render("Did you find the secret?", True, "White")
         PLAY_RECT = PLAY_TEXT.get_rect(center=(768,200))
         win.blit(PLAY_TEXT,PLAY_RECT)
+    if level == 1000:
+        PLAY_TEXT = get_font(40).render("Wait whats this?", True, "White")
+        PLAY_RECT = PLAY_TEXT.get_rect(center=(768,200))
+        win.blit(PLAY_TEXT,PLAY_RECT) 
 def get_font(size):
     return pygame.font.Font("font.ttf", size)
 EntityAppender()
 player = Player(WIDTH/2,HEIGHT/2+100,24,24,0,0)
 menu = False
+pause = False
 Running = True
 timer = 0
 while Running == True:
@@ -363,6 +378,8 @@ while Running == True:
             pygame.quit()
             sys.exit()
         if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_p:
+                pause = True
             if event.key == pygame.K_m:
                 menu = True
             if event.key == pygame.K_a:
@@ -494,6 +511,7 @@ while Running == True:
             key.obtained = False
         player.tier = 0
         menu = False
+
 
     player.appear()
     player.update()
